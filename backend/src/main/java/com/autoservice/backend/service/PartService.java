@@ -38,7 +38,7 @@ public class PartService {
     }
 
     public PartDTO getPartById(Long id) {
-        Part part = partRepository.findById(id).orElseThrow(() -> new RuntimeException("the part with the searched id is missing"));
+        Part part = partRepository.findById(id).orElseThrow(() -> new RuntimeException("The part with the searched id is missing"));
         return mapToDTO(part);
     }
 

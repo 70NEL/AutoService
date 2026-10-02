@@ -7,7 +7,7 @@ import jakarta.persistence.ManyToOne;
 
 public class InventoryDTO {
     private Long id;
-    private ServiceLocationResponseDTO serviceLocation;
-    private PartResponseDTO part;
+    private ServiceLocationDTO serviceLocation;
+    private PartDTO part;
     private Integer currentStock;
 }
