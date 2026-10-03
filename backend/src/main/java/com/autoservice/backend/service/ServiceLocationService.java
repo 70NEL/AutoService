@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -60,5 +61,10 @@ public class ServiceLocationService {
 
         ServiceLocation upt = serviceLocationRepository.save(srv);
         return mapToDTO(upt);
+    }
+
+    public List<ServiceLocationDTO> filterLocations(String locationName, String address, String city) {
+        List<ServiceLocation> list = serviceLocationRepository.filterLocations(locationName, address, city);
+        return list.stream().map(this::mapToDTO).toList();
     }
 }

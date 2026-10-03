@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/service-locations")
@@ -35,5 +37,16 @@ public class ServiceLocationController {
     public ResponseEntity<Void> deleteServiceLocation(@PathVariable Long id) {
         serviceLocationService.deleteServiceLocation(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<ServiceLocationDTO>> filteredSearch(
+            @RequestParam(required = false) String locationName,
+            @RequestParam(required = false) String address,
+            @RequestParam(required = false) String city
+        ) {
+
+        List<ServiceLocationDTO> res = serviceLocationService.filterLocations(locationName, address, city);
+        return ResponseEntity.ok(res);
     }
 }
