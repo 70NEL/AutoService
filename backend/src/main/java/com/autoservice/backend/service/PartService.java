@@ -26,20 +26,9 @@ public class PartService {
         return dto;
     }
 
-    private PartDTO mapToDTO(Part part) {
-        PartDTO dto = new PartDTO();
-        dto.setId(part.getId());
-        dto.setPrice((part.getPrice()));
-        dto.setCode(part.getCode());
-        dto.setCategory(part.getCategory());
-        dto.setName(part.getName());
-        dto.setManufacturer(dto.getManufacturer());
-        return dto;
-    }
-
     public PartDTO getPartById(Long id) {
         Part part = partRepository.findById(id).orElseThrow(() -> new RuntimeException("The part with the searched id is missing"));
-        return mapToDTO(part);
+        return PartDTO.mapToDTO(part);
     }
 
     public void deletePart(Long id) {
@@ -59,7 +48,7 @@ public class PartService {
         part.setPrice(dto.getPrice());
 
         Part updatedPart = partRepository.save(part);
-        return mapToDTO(updatedPart);
+        return PartDTO.mapToDTO(updatedPart);
     }
 
     public List<PartDTO> getAllParts() {

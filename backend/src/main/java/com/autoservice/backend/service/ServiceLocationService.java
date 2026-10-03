@@ -5,10 +5,10 @@ import com.autoservice.backend.model.ServiceLocation;
 import com.autoservice.backend.repository.ServiceLocationRepository;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,19 +29,9 @@ public class ServiceLocationService {
         return dto;
     }
 
-    private ServiceLocationDTO mapToDTO(ServiceLocation srv) {
-        ServiceLocationDTO dto = new ServiceLocationDTO();
-        dto.setId(srv.getId());
-        dto.setAddress(srv.getAddress());
-        dto.setLocationName(srv.getLocationName());
-        dto.setCity(srv.getCity());
-
-        return dto;
-    }
-
     public ServiceLocationDTO findServiceLocationById(Long id) {
         ServiceLocation srv = serviceLocationRepository.findById(id).orElseThrow(() -> new RuntimeException("The service location with the specified id does not exist"));
-        return mapToDTO(srv);
+        return ServiceLocationDTO.mapToDTO(srv);
     }
 
     public void deleteServiceLocation(Long id) {
@@ -60,11 +50,14 @@ public class ServiceLocationService {
         srv.setAddress(dto.getAddress());
 
         ServiceLocation upt = serviceLocationRepository.save(srv);
-        return mapToDTO(upt);
+        return ServiceLocationDTO.mapToDTO(upt);
     }
 
-    public List<ServiceLocationDTO> filterLocations(String locationName, String address, String city) {
-        List<ServiceLocation> list = serviceLocationRepository.filterLocations(locationName, address, city);
-        return list.stream().map(this::mapToDTO).toList();
+    public Page<ServiceLocationDTO> filterLocations(String locationName, String address, String city, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<ServiceLocation> entityPage = serviceLocationRepository.filterLocations(locationName, address, city, pageable);
+
+        return entityPage.map(ServiceLocationDTO::mapToDTO);
     }
 }

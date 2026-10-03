@@ -4,6 +4,9 @@ import com.autoservice.backend.dto.ServiceLocationDTO;
 import com.autoservice.backend.model.ServiceLocation;
 import com.autoservice.backend.service.ServiceLocationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,13 +43,15 @@ public class ServiceLocationController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<ServiceLocationDTO>> filteredSearch(
+    public ResponseEntity<Page<ServiceLocationDTO>> filteredSearch(
             @RequestParam(required = false) String locationName,
             @RequestParam(required = false) String address,
-            @RequestParam(required = false) String city
-        ) {
+            @RequestParam(required = false) String city,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            Pageable pageable) {
 
-        List<ServiceLocationDTO> res = serviceLocationService.filterLocations(locationName, address, city);
+        Page<ServiceLocationDTO> res = serviceLocationService.filterLocations(locationName, address, city, page, size);
         return ResponseEntity.ok(res);
     }
 }
