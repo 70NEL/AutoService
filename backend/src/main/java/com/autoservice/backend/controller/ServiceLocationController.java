@@ -48,8 +48,7 @@ public class ServiceLocationController {
             @RequestParam(required = false) String address,
             @RequestParam(required = false) String city,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            Pageable pageable) {
+            @RequestParam(defaultValue = "10") int size) {
 
         Page<ServiceLocationDTO> res = serviceLocationService.filterLocations(locationName, address, city, page, size);
         return ResponseEntity.ok(res);
