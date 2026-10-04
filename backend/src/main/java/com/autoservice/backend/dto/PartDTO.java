@@ -1,5 +1,6 @@
 package com.autoservice.backend.dto;
 
+import com.autoservice.backend.enums.PartCategory;
 import com.autoservice.backend.model.Part;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,8 +14,9 @@ public class PartDTO {
     private String code;
     private String name;
     private String manufacturer;
-    private String category;
+    private PartCategory category;
     private Double price;
+    private boolean active;
 
     public static PartDTO mapToDTO(Part part) {
         if(part == null) return null;
@@ -25,6 +27,7 @@ public class PartDTO {
         dto.setCategory(part.getCategory());
         dto.setName(part.getName());
         dto.setManufacturer(dto.getManufacturer());
+        dto.setActive(part.isActive());
         return dto;
     }
 }

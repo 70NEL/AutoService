@@ -1,5 +1,6 @@
 package com.autoservice.backend.model;
 
+import com.autoservice.backend.enums.PartCategory;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -13,6 +14,7 @@ public class Part {
     private String code;
     private String name;
     private String manufacturer;
-    private String category;
+    private PartCategory category;
     private Double price;
+    private boolean active;
 }

@@ -32,10 +32,9 @@ public class PartService {
     }
 
     public void deletePart(Long id) {
-        if(!partRepository.existsById(id)) {
-            throw new RuntimeException("The part does not exist!");
-        }
-        partRepository.deleteById(id);
+        Part part = partRepository.findById(id).orElseThrow(()-> new RuntimeException("The part does not exist!"));
+        part.setActive(false);
+        partRepository.save(part);
     }
 
     public PartDTO updatePart(Long id, PartDTO dto) {
