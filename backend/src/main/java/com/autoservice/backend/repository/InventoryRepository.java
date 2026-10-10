@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface InventoryRepository extends JpaRepository<Inventory, Long> {
     @Query("SELECT i FROM Inventory i WHERE " +
             "(:partCode IS NULL OR LOWER(i.part.code) LIKE LOWER(CONCAT('%', :partCode, '%'))) AND " +
@@ -34,4 +36,6 @@ public interface InventoryRepository extends JpaRepository<Inventory, Long> {
             @Param("inStockOnly") Boolean inStockOnly,
             Pageable pageable
             );
+
+    Optional<Inventory> findByPartIdAndServiceLocationId(Long partId, Long serviceLocationId);
 }

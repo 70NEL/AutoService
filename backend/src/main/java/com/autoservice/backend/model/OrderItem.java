@@ -5,25 +5,22 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "CartItems")
 @Getter
 @Setter
-public class CartItem {
+@Table(name = "OrderItems")
+public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cart_id")
-    private Cart cart;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "part_id")
     private Part part;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "service_id")
-    private ServiceLocation serviceLocation;
+    @JoinColumn(name = "order_id")
+    private Order order;
 
+    private Double priceAtPurchase;
     private Integer quantity;
 }

@@ -7,10 +7,8 @@ import com.autoservice.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import java.security.Principal;
 
 @RestController
@@ -21,11 +19,15 @@ public class CartController {
     private final UserService userService;
 
     @PostMapping("/add")
-    public ResponseEntity<CartDTO> addToCart(
-            Principal userPrincipal,
-            @RequestBody AddToCartRequest request) {
+    public ResponseEntity<CartDTO> addToCart(Principal userPrincipal, @RequestBody AddToCartRequest request) {
+        CartDTO cartDTO = cartService.addItemToCart(userPrincipal.getName(), request.getPartId(), request.getServiceLocationId(), request.getQuantity());
 
-        CartDTO cartDTO = cartService.addItemToCart(userPrincipal.getName(), request.getPartId(), request.getQuantity());
+        return ResponseEntity.ok(cartDTO);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<CartDTO> updateCart(Principal userPrincipal, @RequestBody AddToCartRequest request) {
+        CartDTO cartDTO = cartService.removeItemFromCart(userPrincipal.getName(), request.getPartId(), request.getServiceLocationId(), request.getQuantity());
 
         return ResponseEntity.ok(cartDTO);
     }

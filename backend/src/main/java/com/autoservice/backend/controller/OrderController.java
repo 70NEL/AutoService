@@ -1,14 +1,14 @@
 package com.autoservice.backend.controller;
 
 import com.autoservice.backend.dto.OrderDTO;
-import com.autoservice.backend.model.Order;
 import com.autoservice.backend.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
+import java.util.List;
 
 
 @RestController
@@ -18,20 +18,15 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping
-    public ResponseEntity<OrderDTO> createOrder(@RequestBody OrderDTO dto) {
-       OrderDTO saved =  orderService.createOrder(dto);
+    public ResponseEntity<OrderDTO> createOrder(Principal userPrincipal) {
+       OrderDTO saved =  orderService.placeOrder(userPrincipal.getName());
        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<OrderDTO> findOrderById(@PathVariable Long id) {
-        return ResponseEntity.ok(orderService.findOrderById(id));
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<OrderDTO> updateOrderById(@PathVariable Long id, @RequestBody OrderDTO dto) {
-        OrderDTO updated = orderService.updateOrder(id, dto);
-        return ResponseEntity.ok(updated);
+    @GetMapping
+    public ResponseEntity<List<OrderDTO>> getUserOrders(Principal userPrincipal) {
+        List<OrderDTO> orders = orderService.getOrdersByUser(userPrincipal.getName());
+        return ResponseEntity.ok(orders);
     }
 
     @DeleteMapping("/{id}")
